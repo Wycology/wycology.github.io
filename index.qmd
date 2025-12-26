@@ -37,6 +37,8 @@ plot(sp[sp$Occurrence == 1, ], col = "blue", add = TRUE)
 plot(sp[sp$Occurrence == 0, ], col = "red", add = TRUE)
 ```
 
+[ ](f1.png)
+
 ## Build the sdm data object
 
 ```{r}
@@ -48,6 +50,8 @@ d <- sdmData(
 )
 d
 ```
+
+[](f2.png)
 
 ## Build the model
 
@@ -64,6 +68,8 @@ m <- sdm(
 m
 ```
 
+[](f3.png)
+
 ## Check few plots
 
 ```{r}
@@ -71,15 +77,21 @@ m
 roc(m)
 ```
 
+[](f4.png)
+
 ```{r}
 #| eval: false 
 rcurve(m)
 ```
 
+[](f5.png)
+
 ```{r}
 #| eval: false 
 plot(getVarImp(m))
 ```
+
+[](f6.png)
 
 ## Predict
 
@@ -89,3 +101,4 @@ p <- predict(m, preds, mean = TRUE)
 plot(p)
 ```
 
+[](f7.png)
