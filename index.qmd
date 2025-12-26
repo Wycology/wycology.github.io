@@ -101,7 +101,7 @@ We can make a few plots including the roc curve plot.
 roc(m)
 ```
 
-![](f4.png)
+![Receiver Operating Characteristic Curve](f4.png){#fig-roc}
 
 We may also want to assess how our the suitability of habitat varies with the changes in values of the predictor variables. Ideally, we expect to see unimodal curves if we exhausted the niche of the species.
 
@@ -110,7 +110,7 @@ We may also want to assess how our the suitability of habitat varies with the ch
 rcurve(m)
 ```
 
-![](f5.png)
+![Response curve of the species](f5.png)(#fig-rcurve)
 
 To see which of the predictor variables was most important for defining the niche of the species, we can use getVarImp function as follows:
 
@@ -119,7 +119,7 @@ To see which of the predictor variables was most important for defining the nich
 plot(getVarImp(m))
 ```
 
-![](f6.png)
+![Variable importance for the species](f6.png)(#fig-varim)
 
 This shows us that vegetation, in this case, was the most important variable in explaining the niche of our species of interest.
 
@@ -133,6 +133,6 @@ p <- predict(m, preds, mean = TRUE)
 plot(p)
 ```
 
-![](f7.png)
+![Current habitat suitability](f7.png)(#fig-curr_suit_hab)
 
 # References {.unnumbered}
