@@ -51,7 +51,7 @@ plot(sp[sp$Occurrence == 1, ], col = "blue", add = TRUE)
 plot(sp[sp$Occurrence == 0, ], col = "red", add = TRUE)
 ```
 
-![](f1.png)
+![Occurrence points on predictor variable](f1.png){#fig-occurrence}
 
 ## Build the `sdm` data object
 
