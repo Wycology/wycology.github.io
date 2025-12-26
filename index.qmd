@@ -2,9 +2,9 @@
 title: "Species Distribution Modeling"
 format: 
   html:
-  number-sections: true
-  fig-cap-location: bottom
-  fig-align: center
+    number-sections: true
+    fig-cap-location: bottom
+    fig-align: center
 bibliography: references.bib
 ---
 
