@@ -1,5 +1,7 @@
 ---
 title: "Species Distribution Modeling"
+author: "Dr. agr. Wyclife Agumba Oluoch"
+date: today
 format: 
   html:
     number-sections: true
