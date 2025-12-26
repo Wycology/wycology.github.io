@@ -1,12 +1,17 @@
 ---
-title: "Species Distribution Modeling"
-author: "Dr. agr. Wyclife Agumba Oluoch"
+title: "<span style='color:green'>Species Distribution Modeling:</span> <span style='color:blue'>Theory and Practice</span>"
+author: 
+  - name: "Dr. agr. Wyclife Agumba Oluoch"
+    affiliation: "[Land Economics Group](https://www.ilr1.uni-bonn.de/en/research/research-groups/land-economics), Institute for Food and Resource Economics, University of Bonn, Bonn, Germany"
 date: today
 format: 
   html:
     number-sections: true
+    code-line-numbers: true
+    code-block-bg: "#e5e5e5"
     fig-cap-location: bottom
     fig-align: center
+    toc: true
 crossref:               # Required for automatic numbering
   chapters: false       # Unless you're writing a book with chapters
 bibliography: references.bib
