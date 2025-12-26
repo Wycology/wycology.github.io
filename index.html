@@ -9,7 +9,7 @@
 <meta name="author" content="Dr.&nbsp;agr. Wyclife Agumba Oluoch">
 <meta name="dcterms.date" content="2025-12-26">
 
-<title>Species Distribution Modeling – wycology.github.io</title>
+<title>Species Distribution Modeling: Theory and Practice – wycology.github.io</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -97,7 +97,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-0b37c64f34216b628666a8dac638b53b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-63b550c9d1f5658d45eb46b076201023.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -220,20 +220,27 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Species Distribution Modeling</h1>
+<h1 class="title"><span style="color:green">Species Distribution Modeling:</span> <span style="color:blue">Theory and Practice</span></h1>
 </div>
 
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Dr.&nbsp;agr. Wyclife Agumba Oluoch </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="https://www.ilr1.uni-bonn.de/en/research/research-groups/land-economics">Land Economics Group</a>, Institute for Food and Resource Economics, University of Bonn, Bonn, Germany
+          </p>
+      </div>
+  </div>
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Dr.&nbsp;agr. Wyclife Agumba Oluoch </p>
-          </div>
-  </div>
-    
+      
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
@@ -256,31 +263,31 @@ window.Quarto = {
 <section id="loading-required-library" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="loading-required-library"><span class="header-section-number">1.1</span> Loading required library</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'sdm'</span>) <span class="co"># In case you do not have it installed already</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sdm) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">install.packages</span>(<span class="st">'sdm'</span>) <span class="co"># In case you do not have it installed already</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(sdm) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="reading-in-the-occurrence-data" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="reading-in-the-occurrence-data"><span class="header-section-number">1.2</span> Reading in the occurrence data</h2>
 <p>We will use data which comes with the package as that would be the easiest way to begin using the package. This data has presence (1) and absence (0) records of a virtual species. We will read it into <span class="math inline">\(R\)</span> using vect function from `terra` package <span class="citation" data-cites="abatzoglou2018">(<a href="#ref-abatzoglou2018" role="doc-biblioref">Abatzoglou et al. 2018</a>)</span> which is loaded whenever you load sdm.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sp <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="fu">system.file</span>(<span class="st">"external/species.shp"</span>, <span class="at">package =</span> <span class="st">"sdm"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>sp <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="fu">system.file</span>(<span class="st">"external/species.shp"</span>, <span class="at">package =</span> <span class="st">"sdm"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="reading-in-predictor-variables" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="reading-in-predictor-variables"><span class="header-section-number">1.3</span> Reading in predictor variables</h2>
 <p>Apart from the occurrence records, we also need to have the predictor variables. There are four raster layers which come with the package and we will load them alongside the occurrence records to help in building the model. These are also normally called response variables. We will use rast function also from `terra` package <span class="citation" data-cites="abatzoglou2018">(<a href="#ref-abatzoglou2018" role="doc-biblioref">Abatzoglou et al. 2018</a>)</span>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="fu">list.files</span>(<span class="fu">system.file</span>(<span class="st">"external"</span>, <span class="at">package =</span> <span class="st">"sdm"</span>), <span class="at">pattern =</span> <span class="st">".asc$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="fu">list.files</span>(<span class="fu">system.file</span>(<span class="st">"external"</span>, <span class="at">package =</span> <span class="st">"sdm"</span>), <span class="at">pattern =</span> <span class="st">".asc$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="visualize-the-data" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="visualize-the-data"><span class="header-section-number">1.4</span> Visualize the data</h2>
 <p>It is important to visualize the output so that you confirm how the occurrence records, both presence and absence are distributed over the environmental variables, (see <a href="#fig-fig1" class="quarto-xref">Figure&nbsp;1</a>).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(preds<span class="sc">$</span>vegetation)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sp[sp<span class="sc">$</span>Occurrence <span class="sc">==</span> <span class="dv">1</span>, ], <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sp[sp<span class="sc">$</span>Occurrence <span class="sc">==</span> <span class="dv">0</span>, ], <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">plot</span>(preds<span class="sc">$</span>vegetation)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">plot</span>(sp[sp<span class="sc">$</span>Occurrence <span class="sc">==</span> <span class="dv">1</span>, ], <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="fu">plot</span>(sp[sp<span class="sc">$</span>Occurrence <span class="sc">==</span> <span class="dv">0</span>, ], <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="fig-fig1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -297,12 +304,12 @@ Figure&nbsp;1: Occurrence points on predictor variables
 <h2 data-number="1.5" class="anchored" data-anchor-id="build-the-sdm-data-object"><span class="header-section-number">1.5</span> Build the <code>sdm</code> data object</h2>
 <p>Once you are satisfied with the occurrence records, the next step is to create an sdmData object. This is taking both the occurrence data and predictor variables.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">sdmData</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Occurrence <span class="sc">~</span>.,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">train =</span> sp,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">predictors =</span> preds</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>d</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>d <span class="ot">&lt;-</span> <span class="fu">sdmData</span>(</span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="at">formula =</span> Occurrence <span class="sc">~</span>.,</span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="at">train =</span> sp,</span>
+<span id="cb5-4"><a href="#cb5-4"></a>  <span class="at">predictors =</span> preds</span>
+<span id="cb5-5"><a href="#cb5-5"></a>)</span>
+<span id="cb5-6"><a href="#cb5-6"></a>d</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><img src="f2.png" class="img-fluid"></p>
 <p>The d object tells us information like number of species in our dataset, the name of the species, number of features (predictor variables) and their names, type of the data such as presence-absence or presence-only or presence-background, whether we have separate/independent test data, number of records and whether they have coordinates. This is the data we supply to the sdm function to train the model.</p>
@@ -311,15 +318,15 @@ Figure&nbsp;1: Occurrence points on predictor variables
 <h2 data-number="1.6" class="anchored" data-anchor-id="build-the-model"><span class="header-section-number">1.6</span> Build the model</h2>
 <p>In building the sdm model, we provide our formula and the sdmData object. We also provide the methods, replication method, fraction of the data for testing, and number of runs. Here we can also provide other arguments like parallelSetting in case we want to use more cores in the computer and modelSettings to alter the default settings of each method.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">sdm</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Occurrence <span class="sc">~</span>.,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> d,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">methods =</span> <span class="st">"rf"</span>, <span class="co"># There are many methods, see getMethodNames()</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">replication =</span> <span class="st">"sub"</span>, <span class="co"># Can also use cv or boot.</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">test.percent =</span> <span class="dv">20</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">3</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>m <span class="ot">&lt;-</span> <span class="fu">sdm</span>(</span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="at">formula =</span> Occurrence <span class="sc">~</span>.,</span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="at">data =</span> d,</span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="at">methods =</span> <span class="st">"rf"</span>, <span class="co"># There are many methods, see getMethodNames()</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>  <span class="at">replication =</span> <span class="st">"sub"</span>, <span class="co"># Can also use cv or boot.</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>  <span class="at">test.percent =</span> <span class="dv">20</span>,</span>
+<span id="cb6-7"><a href="#cb6-7"></a>  <span class="at">n =</span> <span class="dv">3</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>)</span>
+<span id="cb6-9"><a href="#cb6-9"></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><img src="f3.png" class="img-fluid"></p>
 </section>
@@ -327,7 +334,7 @@ Figure&nbsp;1: Occurrence points on predictor variables
 <h2 data-number="1.7" class="anchored" data-anchor-id="check-few-plots"><span class="header-section-number">1.7</span> Check few plots</h2>
 <p>We can make a few plots including the roc curve plot.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">roc</span>(m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">roc</span>(m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="fig-fig2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -341,7 +348,7 @@ Figure&nbsp;2: Receiver Operating Characteristic Curve
 </div>
 <p>We may also want to assess how our the suitability of habitat varies with the changes in values of the predictor variables. Ideally, we expect to see unimodal curves if we exhausted the niche of the species.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rcurve</span>(m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">rcurve</span>(m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="fig-fig3" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -355,7 +362,7 @@ Figure&nbsp;3: Response curve of the species
 </div>
 <p>To see which of the predictor variables was most important for defining the niche of the species, we can use getVarImp function as follows:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">getVarImp</span>(m))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">plot</span>(<span class="fu">getVarImp</span>(m))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="fig-fig4" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -373,8 +380,8 @@ Figure&nbsp;4: Variable importance for the species
 <h2 data-number="1.8" class="anchored" data-anchor-id="predict"><span class="header-section-number">1.8</span> Predict</h2>
 <p>Finally, the end game is to make prediction of habitat suitability of the species over the geographic space. Here we feed all the predictor variables to the model and get a continuous habitat suitability map as follows:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(m, preds, <span class="at">mean =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(m, preds, <span class="at">mean =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">plot</span>(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="fig-fig5" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
