@@ -55,7 +55,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -178,16 +198,17 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction-to-sdm" id="toc-introduction-to-sdm" class="nav-link active" data-scroll-target="#introduction-to-sdm">Introduction to sdm</a>
+  <li><a href="#introduction-to-species-distribution-modeling-sdm" id="toc-introduction-to-species-distribution-modeling-sdm" class="nav-link active" data-scroll-target="#introduction-to-species-distribution-modeling-sdm"><span class="header-section-number">1</span> Introduction to Species Distribution Modeling (SDM)</a>
   <ul class="collapse">
-  <li><a href="#loading-the-library" id="toc-loading-the-library" class="nav-link" data-scroll-target="#loading-the-library">Loading the library</a></li>
-  <li><a href="#reading-in-the-occurrence-data" id="toc-reading-in-the-occurrence-data" class="nav-link" data-scroll-target="#reading-in-the-occurrence-data">Reading in the occurrence data</a></li>
-  <li><a href="#reading-in-predictor-variables" id="toc-reading-in-predictor-variables" class="nav-link" data-scroll-target="#reading-in-predictor-variables">Reading in predictor variables</a></li>
-  <li><a href="#visualize-the-data" id="toc-visualize-the-data" class="nav-link" data-scroll-target="#visualize-the-data">Visualize the data</a></li>
-  <li><a href="#build-the-sdm-data-object" id="toc-build-the-sdm-data-object" class="nav-link" data-scroll-target="#build-the-sdm-data-object">Build the sdm data object</a></li>
-  <li><a href="#build-the-model" id="toc-build-the-model" class="nav-link" data-scroll-target="#build-the-model">Build the model</a></li>
-  <li><a href="#check-few-plots" id="toc-check-few-plots" class="nav-link" data-scroll-target="#check-few-plots">Check few plots</a></li>
-  <li><a href="#predict" id="toc-predict" class="nav-link" data-scroll-target="#predict">Predict</a></li>
+  <li><a href="#loading-required-library" id="toc-loading-required-library" class="nav-link" data-scroll-target="#loading-required-library"><span class="header-section-number">1.1</span> Loading required library</a></li>
+  <li><a href="#reading-in-the-occurrence-data" id="toc-reading-in-the-occurrence-data" class="nav-link" data-scroll-target="#reading-in-the-occurrence-data"><span class="header-section-number">1.2</span> Reading in the occurrence data</a></li>
+  <li><a href="#reading-in-predictor-variables" id="toc-reading-in-predictor-variables" class="nav-link" data-scroll-target="#reading-in-predictor-variables"><span class="header-section-number">1.3</span> Reading in predictor variables</a></li>
+  <li><a href="#visualize-the-data" id="toc-visualize-the-data" class="nav-link" data-scroll-target="#visualize-the-data"><span class="header-section-number">1.4</span> Visualize the data</a></li>
+  <li><a href="#build-the-sdm-data-object" id="toc-build-the-sdm-data-object" class="nav-link" data-scroll-target="#build-the-sdm-data-object"><span class="header-section-number">1.5</span> Build the <code>sdm</code> data object</a></li>
+  <li><a href="#build-the-model" id="toc-build-the-model" class="nav-link" data-scroll-target="#build-the-model"><span class="header-section-number">1.6</span> Build the model</a></li>
+  <li><a href="#check-few-plots" id="toc-check-few-plots" class="nav-link" data-scroll-target="#check-few-plots"><span class="header-section-number">1.7</span> Check few plots</a></li>
+  <li><a href="#predict" id="toc-predict" class="nav-link" data-scroll-target="#predict"><span class="header-section-number">1.8</span> Predict</a></li>
+  <li><a href="#end" id="toc-end" class="nav-link" data-scroll-target="#end"><span class="header-section-number">1.9</span> End</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -214,30 +235,34 @@ window.Quarto = {
 </header>
 
 
-<section id="introduction-to-sdm" class="level1">
-<h1>Introduction to sdm</h1>
-<p>This is a basic introduction to species distribution modeling in <span class="math inline">\(R\)</span>.</p>
-<section id="loading-the-library" class="level2">
-<h2 class="anchored" data-anchor-id="loading-the-library">Loading the library</h2>
+<section id="introduction-to-species-distribution-modeling-sdm" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introduction to Species Distribution Modeling (SDM)</h1>
+<p>Species distribution modeling (SDM) relates species occurrence data to environmental predictors in order to estimate habitat suitability across space.</p>
+<p>This document provides a minimal, reproducible SDM workflow in <span class="math inline">\(R\)</span> using the <code>sdm</code> package <span class="citation" data-cites="sdm">(<a href="#ref-sdm" role="doc-biblioref">Naimi and Araujo 2016</a>)</span> version 1.2.67.</p>
+<section id="loading-required-library" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="loading-required-library"><span class="header-section-number">1.1</span> Loading required library</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'sdm'</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'sdm'</span>) <span class="co"># In case you do not have it installed already</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sdm) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="reading-in-the-occurrence-data" class="level2">
-<h2 class="anchored" data-anchor-id="reading-in-the-occurrence-data">Reading in the occurrence data</h2>
+<section id="reading-in-the-occurrence-data" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="reading-in-the-occurrence-data"><span class="header-section-number">1.2</span> Reading in the occurrence data</h2>
+<p>We will use data which comes with the package as that would be the easiest way to begin using the package. This data has presence (1) and absence (0) records of a virtual species. We will read it into <span class="math inline">\(R\)</span> using vect function from `terra` package <span class="citation" data-cites="abatzoglou2018">(<a href="#ref-abatzoglou2018" role="doc-biblioref">Abatzoglou et al. 2018</a>)</span> which is loaded whenever you load sdm.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sp <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="fu">system.file</span>(<span class="st">"external/species.shp"</span>, <span class="at">package =</span> <span class="st">"sdm"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="reading-in-predictor-variables" class="level2">
-<h2 class="anchored" data-anchor-id="reading-in-predictor-variables">Reading in predictor variables</h2>
+<section id="reading-in-predictor-variables" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="reading-in-predictor-variables"><span class="header-section-number">1.3</span> Reading in predictor variables</h2>
+<p>Apart from the occurrence records, we also need to have the predictor variables. There are four raster layers which come with the package and we will load them alongside the occurrence records to help in building the model. These are also normally called response variables. We will use rast function also from `terra` package <span class="citation" data-cites="abatzoglou2018">(<a href="#ref-abatzoglou2018" role="doc-biblioref">Abatzoglou et al. 2018</a>)</span>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="fu">list.files</span>(<span class="fu">system.file</span>(<span class="st">"external"</span>, <span class="at">package =</span> <span class="st">"sdm"</span>), <span class="at">pattern =</span> <span class="st">".asc$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="visualize-the-data" class="level2">
-<h2 class="anchored" data-anchor-id="visualize-the-data">Visualize the data</h2>
+<section id="visualize-the-data" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="visualize-the-data"><span class="header-section-number">1.4</span> Visualize the data</h2>
+<p>It is important to visualize the output so that you confirm how the occurrence records, both presence and absence are distributed over the environmental variables.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(preds<span class="sc">$</span>vegetation)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sp[sp<span class="sc">$</span>Occurrence <span class="sc">==</span> <span class="dv">1</span>, ], <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
@@ -245,8 +270,9 @@ window.Quarto = {
 </div>
 <p><img src="f1.png" class="img-fluid"></p>
 </section>
-<section id="build-the-sdm-data-object" class="level2">
-<h2 class="anchored" data-anchor-id="build-the-sdm-data-object">Build the sdm data object</h2>
+<section id="build-the-sdm-data-object" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="build-the-sdm-data-object"><span class="header-section-number">1.5</span> Build the <code>sdm</code> data object</h2>
+<p>Once you are satisfied with the occurrence records, the next step is to create an sdmData object. This is taking both the occurrence data and predictor variables.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">sdmData</span>(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Occurrence <span class="sc">~</span>.,</span>
@@ -256,15 +282,17 @@ window.Quarto = {
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>d</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><img src="f2.png" class="img-fluid"></p>
+<p>The d object tells us information like number of species in our dataset, the name of the species, number of features (predictor variables) and their names, type of the data such as presence-absence or presence-only or presence-background, whether we have separate/independent test data, number of records and whether they have coordinates. This is the data we supply to the sdm function to train the model.</p>
 </section>
-<section id="build-the-model" class="level2">
-<h2 class="anchored" data-anchor-id="build-the-model">Build the model</h2>
+<section id="build-the-model" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="build-the-model"><span class="header-section-number">1.6</span> Build the model</h2>
+<p>In building the sdm model, we provide our formula and the sdmData object. We also provide the methods, replication method, fraction of the data for testing, and number of runs. Here we can also provide other arguments like parallelSetting in case we want to use more cores in the computer and modelSettings to alter the default settings of each method.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">sdm</span>(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> Occurrence <span class="sc">~</span>.,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> d,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">methods =</span> <span class="st">"rf"</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">replication =</span> <span class="st">"sub"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">methods =</span> <span class="st">"rf"</span>, <span class="co"># There are many methods, see getMethodNames()</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">replication =</span> <span class="st">"sub"</span>, <span class="co"># Can also use cv or boot.</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">test.percent =</span> <span class="dv">20</span>,</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">3</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>)</span>
@@ -272,34 +300,50 @@ window.Quarto = {
 </div>
 <p><img src="f3.png" class="img-fluid"></p>
 </section>
-<section id="check-few-plots" class="level2">
-<h2 class="anchored" data-anchor-id="check-few-plots">Check few plots</h2>
+<section id="check-few-plots" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="check-few-plots"><span class="header-section-number">1.7</span> Check few plots</h2>
+<p>We can make a few plots including the roc curve plot.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">roc</span>(m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><img src="f4.png" class="img-fluid"></p>
+<p>We may also want to assess how our the suitability of habitat varies with the changes in values of the predictor variables. Ideally, we expect to see unimodal curves if we exhausted the niche of the species.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rcurve</span>(m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><img src="f5.png" class="img-fluid"></p>
+<p>To see which of the predictor variables was most important for defining the niche of the species, we can use getVarImp function as follows:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">getVarImp</span>(m))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><img src="f6.png" class="img-fluid"></p>
+<p>This shows us that vegetation, in this case, was the most important variable in explaining the niche of our species of interest.</p>
 </section>
-<section id="predict" class="level2">
-<h2 class="anchored" data-anchor-id="predict">Predict</h2>
+<section id="predict" class="level2" data-number="1.8">
+<h2 data-number="1.8" class="anchored" data-anchor-id="predict"><span class="header-section-number">1.8</span> Predict</h2>
+<p>Finally, the end game is to make prediction of habitat suitability of the species over the geographic space. Here we feed all the predictor variables to the model and get a continuous habitat suitability map as follows:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(m, preds, <span class="at">mean =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><img src="f7.png" class="img-fluid"></p>
+</section>
+<section id="end" class="level2" data-number="1.9">
+
+
 
 
 </section>
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">1.9 End</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-abatzoglou2018" class="csl-entry" role="listitem">
+Abatzoglou, John T, Solomon Z Dobrowski, Sean A Parks, and Katherine C Hegewisch. 2018. <span>“TerraClimate, a High-Resolution Global Dataset of Monthly Climate and Climatic Water Balance from 1958<span></span>2015.”</span> <em>Scientific Data</em> 5 (1): 112.
+</div>
+<div id="ref-sdm" class="csl-entry" role="listitem">
+Naimi, Babak, and Miguel B. Araujo. 2016. <span>“Sdm: A Reproducible and Extensible r Platform for Species Distribution Modelling”</span> 39: 368–75. <a href="https://doi.org/10.1111/ecog.01881">https://doi.org/10.1111/ecog.01881</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
