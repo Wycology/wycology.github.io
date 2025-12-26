@@ -44,7 +44,7 @@ preds <- rast(list.files(system.file("external", package = "sdm"), pattern = ".a
 
 ## Visualize the data
 
-It is important to visualize the output so that you confirm how the occurrence records, both presence and absence are distributed over the environmental variables, (see @fig-occurrence).
+It is important to visualize the output so that you confirm how the occurrence records, both presence and absence are distributed over the environmental variables, (see @fig-fig1).
 
 ```{r}
 #| eval: false
@@ -53,7 +53,7 @@ plot(sp[sp$Occurrence == 1, ], col = "blue", add = TRUE)
 plot(sp[sp$Occurrence == 0, ], col = "red", add = TRUE)
 ```
 
-![A scenic mountain landscape](f1.png){#fig-occurrence}
+![Occurrence points on predictor variables](f1.png){#fig-fig1}
 
 ## Build the `sdm` data object
 
