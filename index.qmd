@@ -1,11 +1,80 @@
 ---
-title: "wycology.github.io"
+title: "Species Distribution Modeling"
 ---
 
-This is a Quarto website.
+# Introduction to sdm
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+This is a basic introduction to species distribution modeling in $R$.
+
+## Loading the library
 
 ```{r}
-1 + 1
+library(sdm) 
 ```
+
+## Reading in the occurrence data
+
+```{r}
+sp <- vect(system.file("external/species.shp", package = "sdm"))
+```
+
+## Reading in predictor variables
+
+```{r}
+preds <- rast(list.files(system.file("external", package = "sdm"), pattern = ".asc$", full.names = TRUE))
+```
+
+## Visualize the data
+
+```{r}
+plot(preds$vegetation)
+plot(sp[sp$Occurrence == 1, ], col = "blue", add = TRUE)
+plot(sp[sp$Occurrence == 0, ], col = "red", add = TRUE)
+```
+
+## Build the sdm data object
+
+```{r}
+d <- sdmData(
+  formula = Occurrence ~.,
+  train = sp,
+  predictors = preds
+)
+d
+```
+
+## Build the model
+
+```{r}
+m <- sdm(
+  formula = Occurrence ~.,
+  data = d,
+  methods = "rf",
+  replication = "sub",
+  test.percent = 20,
+  n = 3
+)
+m
+```
+
+## Check few plots
+
+```{r}
+roc(m)
+```
+
+```{r}
+rcurve(m)
+```
+
+```{r}
+plot(getVarImp(m))
+```
+
+## Predict
+
+```{r}
+p <- predict(m, preds, mean = TRUE)
+plot(p)
+```
+
