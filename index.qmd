@@ -9,6 +9,7 @@ This is a basic introduction to species distribution modeling in $R$.
 ## Loading the library
 
 ```{r}
+#| eval: false
 install.packages('sdm')
 library(sdm) 
 ```
@@ -16,18 +17,21 @@ library(sdm)
 ## Reading in the occurrence data
 
 ```{r}
+#| eval: false
 sp <- vect(system.file("external/species.shp", package = "sdm"))
 ```
 
 ## Reading in predictor variables
 
 ```{r}
+#| eval: false
 preds <- rast(list.files(system.file("external", package = "sdm"), pattern = ".asc$", full.names = TRUE))
 ```
 
 ## Visualize the data
 
 ```{r}
+#| eval: false
 plot(preds$vegetation)
 plot(sp[sp$Occurrence == 1, ], col = "blue", add = TRUE)
 plot(sp[sp$Occurrence == 0, ], col = "red", add = TRUE)
@@ -36,6 +40,7 @@ plot(sp[sp$Occurrence == 0, ], col = "red", add = TRUE)
 ## Build the sdm data object
 
 ```{r}
+#| eval: false
 d <- sdmData(
   formula = Occurrence ~.,
   train = sp,
@@ -47,6 +52,7 @@ d
 ## Build the model
 
 ```{r}
+#| eval: false
 m <- sdm(
   formula = Occurrence ~.,
   data = d,
@@ -61,20 +67,24 @@ m
 ## Check few plots
 
 ```{r}
+#| eval: false
 roc(m)
 ```
 
 ```{r}
+#| eval: false 
 rcurve(m)
 ```
 
 ```{r}
+#| eval: false 
 plot(getVarImp(m))
 ```
 
 ## Predict
 
 ```{r}
+#| eval: false 
 p <- predict(m, preds, mean = TRUE)
 plot(p)
 ```
