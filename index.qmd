@@ -9,6 +9,7 @@ This is a basic introduction to species distribution modeling in $R$.
 ## Loading the library
 
 ```{r}
+install.packages('sdm')
 library(sdm) 
 ```
 
