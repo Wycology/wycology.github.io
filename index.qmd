@@ -17,57 +17,57 @@ crossref:               # Required for automatic numbering
 bibliography: references.bib
 ---
 
-# Introduction to Species Distribution Modeling (SDM)
+# Introduction
 
-Species distribution modeling (SDM) relates species occurrence data to environmental predictors in order to estimate habitat suitability across space.
+Species distribution modeling (SDM) relates species occurrence data to environmental predictors with the aim of estimating habitat suitability across space.
 
 This document provides a minimal, reproducible SDM workflow in $R$ using the `sdm` package [@sdm] version 1.2.67.
 
 ## Loading required library
 
 ```{r}
-#| eval: false
-install.packages('sdm') # In case you do not have it installed already
+#install.packages('sdm') # In case you do not have it installed already
 library(sdm) 
 ```
 
 ## Reading in the occurrence data
 
-We will use data which comes with the package as that would be the easiest way to begin using the package. This data has presence (1) and absence (0) records of a virtual species. We will read it into $R$ using vect function from \`terra\` package [@abatzoglou2018] which is loaded whenever you load sdm.
+We will use data which comes with the package as that would be the easiest way to begin using the package. This data has presence (1) and absence (0) records of a virtual species. We will read it into $R$ using vect function from `terra` package [@abatzoglou2018] which is loaded whenever you load `sdm`.
 
 ```{r}
-#| eval: false
+#| eval: true
 sp <- vect(system.file("external/species.shp", package = "sdm"))
+sp
 ```
 
 ## Reading in predictor variables
 
-Apart from the occurrence records, we also need to have the predictor variables. There are four raster layers which come with the package and we will load them alongside the occurrence records to help in building the model. These are also normally called response variables. We will use rast function also from \`terra\` package [@abatzoglou2018].
+Apart from the occurrence records, we also need to load the predictor variables. There are four raster layers which come with the package and we will load them alongside the occurrence records to help in building the model. These are also often referred to as response variables. We will use rast function also from `terra` package [@abatzoglou2018].
 
 ```{r}
-#| eval: false
 preds <- rast(list.files(system.file("external", package = "sdm"), pattern = ".asc$", full.names = TRUE))
+preds
 ```
 
 ## Visualize the data
 
-It is important to visualize the output so that you confirm how the occurrence records, both presence and absence are distributed over the environmental variables, (see @fig-fig1).
+It is important to visualize the output so that you confirm how the occurrence records, both presence and absence, are distributed over the environmental variable(s), (see @fig-fig1).
 
 ```{r}
-#| eval: false
+#| eval: true
+#| label: fig-fig1
+#| fig-cap: "Distribution of occurrence points over the region of interest"
 plot(preds$vegetation)
 plot(sp[sp$Occurrence == 1, ], col = "blue", add = TRUE)
 plot(sp[sp$Occurrence == 0, ], col = "red", add = TRUE)
 ```
 
-![Occurrence points on predictor variables](f1.png){#fig-fig1}
-
 ## Build the `sdm` data object
 
-Once you are satisfied with the occurrence records, the next step is to create an sdmData object. This is taking both the occurrence data and predictor variables.
+Once you are satisfied with the distribution of the occurrence records, the next step is to create an $sdmData$ object. This is taking both the occurrence data and predictor variables.
 
 ```{r}
-#| eval: false
+#| eval: true
 d <- sdmData(
   formula = Occurrence ~.,
   train = sp,
@@ -76,16 +76,14 @@ d <- sdmData(
 d
 ```
 
-![](f2.png)
-
-The d object tells us information like number of species in our dataset, the name of the species, number of features (predictor variables) and their names, type of the data such as presence-absence or presence-only or presence-background, whether we have separate/independent test data, number of records and whether they have coordinates. This is the data we supply to the sdm function to train the model.
+The $d$ object tells us information like number of species in our data set, the name of the species, number of features (predictor variables) and their names, type of the data such as presence-absence or presence-only or presence-background, whether we have separate/independent test data, number of records and whether they have coordinates. This is the data we supply to the `sdm` function to train the model.
 
 ## Build the model
 
-In building the sdm model, we provide our formula and the sdmData object. We also provide the methods, replication method, fraction of the data for testing, and number of runs. Here we can also provide other arguments like parallelSetting in case we want to use more cores in the computer and modelSettings to alter the default settings of each method.
+In building the `sdm` model, we provide our formula and the $d$ object. We also provide the methods, replication method, fraction of the data for testing, and the number of runs. Here we can also provide other arguments like parallelSetting in case we want to use more cores in the computer and modelSettings to alter the default settings of each method.
 
 ```{r}
-#| eval: false
+#| eval: true
 m <- sdm(
   formula = Occurrence ~.,
   data = d,
@@ -97,23 +95,23 @@ m <- sdm(
 m
 ```
 
-![](f3.png)
-
 ## Check few plots
 
-We can make a few plots including the roc curve plot.
+We can make a few plots including the roc curve plot, to check whether the model performed better than random chance, @fig-fig2.
 
 ```{r}
-#| eval: false
+#| eval: true
+#| label: fig-fig2
+#| fig-cap: "Receiver perating Characteristic Curve"
 roc(m)
 ```
-
-![Receiver Operating Characteristic Curve](f4.png){#fig-fig2}
 
 We may also want to assess how our the suitability of habitat varies with the changes in values of the predictor variables. Ideally, we expect to see unimodal curves if we exhausted the niche of the species.
 
 ```{r}
-#| eval: false 
+#| eval: true
+#| label: fig-fig3
+#| fig-cap: "Response Curve for the species to environmental variables"
 rcurve(m)
 ```
 
@@ -122,11 +120,11 @@ rcurve(m)
 To see which of the predictor variables was most important for defining the niche of the species, we can use getVarImp function as follows:
 
 ```{r}
-#| eval: false 
+#| eval: true
+#| label: fig-fig4
+#| fig-cap: "Variable importance for the species" 
 plot(getVarImp(m))
 ```
-
-![Variable importance for the species](f6.png){#fig-fig4}
 
 This shows us that vegetation, in this case, was the most important variable in explaining the niche of our species of interest.
 
@@ -135,11 +133,11 @@ This shows us that vegetation, in this case, was the most important variable in 
 Finally, the end game is to make prediction of habitat suitability of the species over the geographic space. Here we feed all the predictor variables to the model and get a continuous habitat suitability map as follows:
 
 ```{r}
-#| eval: false 
-p <- predict(m, preds, mean = TRUE)
+#| eval: true
+#| label: fig-fig5
+#| fig-cap: "Current habitat suitability for the specie"
+p <- predict(object = m, preds, mean = TRUE)
 plot(p)
 ```
-
-![Current habitat suitability](f7.png){#fig-fig5}
 
 # References {.unnumbered}
