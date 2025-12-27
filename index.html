@@ -211,6 +211,7 @@ window.Quarto = {
   <li><a href="#check-few-plots" id="toc-check-few-plots" class="nav-link" data-scroll-target="#check-few-plots"><span class="header-section-number">1.7</span> Check few plots</a></li>
   <li><a href="#predict" id="toc-predict" class="nav-link" data-scroll-target="#predict"><span class="header-section-number">1.8</span> Predict</a></li>
   <li><a href="#binary-maps" id="toc-binary-maps" class="nav-link" data-scroll-target="#binary-maps"><span class="header-section-number">1.9</span> Binary Maps</a></li>
+  <li><a href="#how-much-area-is-suitable-for-the-species" id="toc-how-much-area-is-suitable-for-the-species" class="nav-link" data-scroll-target="#how-much-area-is-suitable-for-the-species"><span class="header-section-number">1.10</span> How much area is suitable for the species?</a></li>
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
@@ -275,14 +276,35 @@ window.Quarto = {
 <div class="cell-output cell-output-stderr">
 <pre><code>sdm 1.2-59 (2025-07-13)</code></pre>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:terra':
+
+    intersect, union</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="reading-in-the-occurrence-data" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="reading-in-the-occurrence-data"><span class="header-section-number">1.2</span> Reading in the occurrence data</h2>
 <p>We will use data which comes with the package as that would be the easiest way to begin using the package. This data has presence (1) and absence (0) records of a virtual species. We will read it into <span class="math inline">\(R\)</span> using the vect function from <code>terra</code> package <span class="citation" data-cites="abatzoglou2018">(<a href="#ref-abatzoglou2018" role="doc-biblioref">Abatzoglou et al. 2018</a>)</span> which is loaded whenever you load <code>sdm</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>sp <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="fu">system.file</span>(<span class="st">"external/species.shp"</span>, <span class="at">package =</span> <span class="st">"sdm"</span>))</span>
-<span id="cb5-2"><a href="#cb5-2"></a>sp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>sp <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="fu">system.file</span>(<span class="st">"external/species.shp"</span>, <span class="at">package =</span> <span class="st">"sdm"</span>))</span>
+<span id="cb11-2"><a href="#cb11-2"></a>sp</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> class       : SpatVector 
  geometry    : points 
@@ -302,8 +324,8 @@ window.Quarto = {
 <h2 data-number="1.3" class="anchored" data-anchor-id="reading-in-predictor-variables"><span class="header-section-number">1.3</span> Reading in predictor variables</h2>
 <p>Apart from the occurrence records, we also need to load the predictor variables. There are four raster layers which come with the package and we will load them alongside the occurrence records to help in building the model. These are also often referred to as response variables. We will use rast function also from <code>terra</code> package <span class="citation" data-cites="abatzoglou2018">(<a href="#ref-abatzoglou2018" role="doc-biblioref">Abatzoglou et al. 2018</a>)</span>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="fu">list.files</span>(<span class="fu">system.file</span>(<span class="st">"external"</span>, <span class="at">package =</span> <span class="st">"sdm"</span>), <span class="at">pattern =</span> <span class="st">".asc$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb7-2"><a href="#cb7-2"></a>preds</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="fu">list.files</span>(<span class="fu">system.file</span>(<span class="st">"external"</span>, <span class="at">package =</span> <span class="st">"sdm"</span>), <span class="at">pattern =</span> <span class="st">".asc$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb13-2"><a href="#cb13-2"></a>preds</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>class       : SpatRaster 
 size        : 71, 124, 4  (nrow, ncol, nlyr)
@@ -322,9 +344,9 @@ names       : elevation, precipitation, temperature, vegetation </code></pre>
 <h2 data-number="1.4" class="anchored" data-anchor-id="visualize-the-data"><span class="header-section-number">1.4</span> Visualize the data</h2>
 <p>It is important to visualize the output so that you confirm how the occurrence records, both presence and absence, are distributed over the environmental variable(s), (see <a href="#fig-fig1" class="quarto-xref">Figure&nbsp;1</a>).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">plot</span>(preds<span class="sc">$</span>vegetation)</span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">plot</span>(sp[sp<span class="sc">$</span>Occurrence <span class="sc">==</span> <span class="dv">1</span>, ], <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="fu">plot</span>(sp[sp<span class="sc">$</span>Occurrence <span class="sc">==</span> <span class="dv">0</span>, ], <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">plot</span>(preds<span class="sc">$</span>vegetation)</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">plot</span>(sp[sp<span class="sc">$</span>Occurrence <span class="sc">==</span> <span class="dv">1</span>, ], <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="fu">plot</span>(sp[sp<span class="sc">$</span>Occurrence <span class="sc">==</span> <span class="dv">0</span>, ], <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-fig1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -343,12 +365,12 @@ Figure&nbsp;1: Distribution of occurrence points over the region of interest
 <h2 data-number="1.5" class="anchored" data-anchor-id="build-the-sdm-data-object"><span class="header-section-number">1.5</span> Build the <code>sdm</code> data object</h2>
 <p>Once you are satisfied with the distribution of the occurrence records, the next step is to create an <span class="math inline">\(sdmData\)</span> object. This is taking both the occurrence data and predictor variables.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>d <span class="ot">&lt;-</span> <span class="fu">sdmData</span>(</span>
-<span id="cb10-2"><a href="#cb10-2"></a>  <span class="at">formula =</span> Occurrence <span class="sc">~</span>.,</span>
-<span id="cb10-3"><a href="#cb10-3"></a>  <span class="at">train =</span> sp,</span>
-<span id="cb10-4"><a href="#cb10-4"></a>  <span class="at">predictors =</span> preds</span>
-<span id="cb10-5"><a href="#cb10-5"></a>)</span>
-<span id="cb10-6"><a href="#cb10-6"></a>d</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>d <span class="ot">&lt;-</span> <span class="fu">sdmData</span>(</span>
+<span id="cb16-2"><a href="#cb16-2"></a>  <span class="at">formula =</span> Occurrence <span class="sc">~</span>.,</span>
+<span id="cb16-3"><a href="#cb16-3"></a>  <span class="at">train =</span> sp,</span>
+<span id="cb16-4"><a href="#cb16-4"></a>  <span class="at">predictors =</span> preds</span>
+<span id="cb16-5"><a href="#cb16-5"></a>)</span>
+<span id="cb16-6"><a href="#cb16-6"></a>d</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>class                                 : sdmdata 
 =========================================================== 
@@ -368,15 +390,15 @@ has Coordinates?                      :  TRUE </code></pre>
 <h2 data-number="1.6" class="anchored" data-anchor-id="build-the-model"><span class="header-section-number">1.6</span> Build the model</h2>
 <p>In building the <code>sdm</code> model, we provide our formula and the <span class="math inline">\(d\)</span> object. We also provide the methods, replication method, fraction of the data for testing, and the number of runs. Here we can also provide other arguments like parallelSetting in case we want to use more cores in the computer and modelSettings to alter the default settings of each method.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>m <span class="ot">&lt;-</span> <span class="fu">sdm</span>(</span>
-<span id="cb12-2"><a href="#cb12-2"></a>  <span class="at">formula =</span> Occurrence <span class="sc">~</span>.,</span>
-<span id="cb12-3"><a href="#cb12-3"></a>  <span class="at">data =</span> d,</span>
-<span id="cb12-4"><a href="#cb12-4"></a>  <span class="at">methods =</span> <span class="st">"rf"</span>, <span class="co"># There are many methods, see getMethodNames()</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a>  <span class="at">replication =</span> <span class="st">"sub"</span>, <span class="co"># Can also use cv or boot.</span></span>
-<span id="cb12-6"><a href="#cb12-6"></a>  <span class="at">test.percent =</span> <span class="dv">20</span>,</span>
-<span id="cb12-7"><a href="#cb12-7"></a>  <span class="at">n =</span> <span class="dv">10</span></span>
-<span id="cb12-8"><a href="#cb12-8"></a>)</span>
-<span id="cb12-9"><a href="#cb12-9"></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>m <span class="ot">&lt;-</span> <span class="fu">sdm</span>(</span>
+<span id="cb18-2"><a href="#cb18-2"></a>  <span class="at">formula =</span> Occurrence <span class="sc">~</span>.,</span>
+<span id="cb18-3"><a href="#cb18-3"></a>  <span class="at">data =</span> d,</span>
+<span id="cb18-4"><a href="#cb18-4"></a>  <span class="at">methods =</span> <span class="st">"rf"</span>, <span class="co"># There are many methods, see getMethodNames()</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a>  <span class="at">replication =</span> <span class="st">"sub"</span>, <span class="co"># Can also use cv or boot.</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a>  <span class="at">test.percent =</span> <span class="dv">20</span>,</span>
+<span id="cb18-7"><a href="#cb18-7"></a>  <span class="at">n =</span> <span class="dv">10</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a>)</span>
+<span id="cb18-9"><a href="#cb18-9"></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>class                                 : sdmModels 
 ======================================================== 
@@ -403,7 +425,7 @@ model Mean performance (per species), using test dataset (generated using partit
 
 methods    :     AUC     |     COR     |     TSS     |     Deviance 
 -------------------------------------------------------------------------
-rf         :     0.86    |     0.65    |     0.71    |     0.97     </code></pre>
+rf         :     0.86    |     0.66    |     0.72    |     1.03     </code></pre>
 </div>
 </div>
 </section>
@@ -411,7 +433,7 @@ rf         :     0.86    |     0.65    |     0.71    |     0.97     </code></pre
 <h2 data-number="1.7" class="anchored" data-anchor-id="check-few-plots"><span class="header-section-number">1.7</span> Check few plots</h2>
 <p>We can make a few plots including the roc curve plot, to check whether the model performed better than random chance, <a href="#fig-fig2" class="quarto-xref">Figure&nbsp;2</a>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">roc</span>(m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">roc</span>(m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-fig2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -427,24 +449,7 @@ Figure&nbsp;2: Receiver perating Characteristic Curve
 </div>
 <p>We may also want to assess how our the suitability of habitat varies with the changes in values of the predictor variables. Ideally, we expect to see uni-modal curves if we exhausted the niche of the species.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">rcurve</span>(m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: ggplot2</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'ggplot2'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:kernlab':
-
-    alpha</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:randomForest':
-
-    margin</code></pre>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">rcurve</span>(m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>The id argument is not specified; The modelIDs of 10 successfully fitted models are assigned to id...! </code></pre>
 </div>
@@ -469,7 +474,7 @@ Figure&nbsp;3: Response Curve for the species to environmental variables
 </div>
 <p>To see which of the predictor variables was most important for defining the niche of the species, we can use getVarImp function as follows:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">plot</span>(<span class="fu">getVarImp</span>(m))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">plot</span>(<span class="fu">getVarImp</span>(m))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 The variable importance for all the models are combined (averaged)... </code></pre>
@@ -493,8 +498,8 @@ Figure&nbsp;4: Variable importance for the species
 <h2 data-number="1.8" class="anchored" data-anchor-id="predict"><span class="header-section-number">1.8</span> Predict</h2>
 <p>Finally, the end game is to make prediction of habitat suitability of the species over the geographic space. Here we feed all the predictor variables to the model in order to get a continuous habitat suitability map as follows:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="at">object =</span> m, preds, <span class="at">mean =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb24-2"><a href="#cb24-2"></a><span class="fu">plot</span>(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="at">object =</span> m, preds, <span class="at">mean =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="fu">plot</span>(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-fig5" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -513,8 +518,8 @@ Figure&nbsp;5: Current habitat suitability for the species
 <h2 data-number="1.9" class="anchored" data-anchor-id="binary-maps"><span class="header-section-number">1.9</span> Binary Maps</h2>
 <p>After creating the habitat suitability map, we may be interested in actually showing where the species are present or absent. For that we need to binarize the suitability map so that we have presence (1) or absence (0). However, since the suitability map is continuous, it is difficult to strike a balance on where to pick the threshold. For this, we can go with a threshold that maximizes sensitivity and specificity. However, depending on the research objective, one may decide to use different threshold. For example, when trying to identify potential areas for conserving an endangered species, one may use lower thershold so that more area is considered present locations and demarcated for conservation, etc. Here we will go with the threshold that maximizes sensitivity and specificity.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>pa <span class="ot">&lt;-</span> <span class="fu">pa</span>(<span class="at">x =</span> p, <span class="at">y =</span> m, <span class="at">id =</span> <span class="st">"ensemble"</span>, <span class="at">opt =</span> <span class="dv">2</span>)</span>
-<span id="cb25-2"><a href="#cb25-2"></a><span class="fu">plot</span>(pa, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"darkgreen"</span>, <span class="st">"gray80"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>pa <span class="ot">&lt;-</span> <span class="fu">pa</span>(<span class="at">x =</span> p, <span class="at">y =</span> m, <span class="at">id =</span> <span class="st">"ensemble"</span>, <span class="at">opt =</span> <span class="dv">2</span>)</span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="fu">plot</span>(pa, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"darkgreen"</span>, <span class="st">"gray80"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-fig6" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -524,6 +529,37 @@ Figure&nbsp;5: Current habitat suitability for the species
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fig6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;6: Presence absence binary map for the species
 </figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="how-much-area-is-suitable-for-the-species" class="level2" data-number="1.10">
+<h2 data-number="1.10" class="anchored" data-anchor-id="how-much-area-is-suitable-for-the-species"><span class="header-section-number">1.10</span> How much area is suitable for the species?</h2>
+<p>We can get this information using the expanse function in terra as follows:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">crs</span>(pa) <span class="ot">&lt;-</span> <span class="fu">crs</span>(sp)</span>
+<span id="cb28-2"><a href="#cb28-2"></a>present_area <span class="ot">&lt;-</span> <span class="fu">expanse</span>(pa, <span class="at">unit =</span> <span class="st">"ha"</span>, <span class="at">byValue =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb28-3"><a href="#cb28-3"></a>present_area <span class="sc">|&gt;</span> </span>
+<span id="cb28-4"><a href="#cb28-4"></a>  <span class="fu">mutate</span>(<span class="at">Class =</span> <span class="fu">case_when</span>(value <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Presence"</span>,</span>
+<span id="cb28-5"><a href="#cb28-5"></a>                           value <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"Absence"</span>,</span>
+<span id="cb28-6"><a href="#cb28-6"></a>                           <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.character</span>(value))) <span class="sc">|&gt;</span> </span>
+<span id="cb28-7"><a href="#cb28-7"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Class, area, <span class="at">fill =</span> Class)) <span class="sc">+</span></span>
+<span id="cb28-8"><a href="#cb28-8"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb28-9"><a href="#cb28-9"></a>  <span class="co"># Add text labels on top of the bars</span></span>
+<span id="cb28-10"><a href="#cb28-10"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(area)),  <span class="co"># Display area value, rounded to 2 decimals</span></span>
+<span id="cb28-11"><a href="#cb28-11"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>,                 <span class="co"># Adjust vertical position (move up)</span></span>
+<span id="cb28-12"><a href="#cb28-12"></a>            <span class="at">color =</span> <span class="st">"black"</span>,               <span class="co"># Set text color</span></span>
+<span id="cb28-13"><a href="#cb28-13"></a>            <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span>                    <span class="co"># Set text size</span></span>
+<span id="cb28-14"><a href="#cb28-14"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Absence"</span> <span class="ot">=</span> <span class="st">"gray80"</span>, <span class="st">"Presence"</span> <span class="ot">=</span> <span class="st">"darkgreen"</span>)) <span class="sc">+</span></span>
+<span id="cb28-15"><a href="#cb28-15"></a>  <span class="fu">theme_classic</span>(<span class="at">base_size =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb28-16"><a href="#cb28-16"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb28-17"><a href="#cb28-17"></a>  <span class="co"># Optional: Adjust y-axis limits to make room for the text</span></span>
+<span id="cb28-18"><a href="#cb28-18"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fu">max</span>(present_area<span class="sc">$</span>area) <span class="sc">*</span> <span class="fl">1.1</span>) <span class="co"># Extends the y-axis limit by 10% to prevent clipping</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
