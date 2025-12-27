@@ -373,7 +373,7 @@ has Coordinates?                      :  TRUE </code></pre>
 <span id="cb12-4"><a href="#cb12-4"></a>  <span class="at">methods =</span> <span class="st">"rf"</span>, <span class="co"># There are many methods, see getMethodNames()</span></span>
 <span id="cb12-5"><a href="#cb12-5"></a>  <span class="at">replication =</span> <span class="st">"sub"</span>, <span class="co"># Can also use cv or boot.</span></span>
 <span id="cb12-6"><a href="#cb12-6"></a>  <span class="at">test.percent =</span> <span class="dv">20</span>,</span>
-<span id="cb12-7"><a href="#cb12-7"></a>  <span class="at">n =</span> <span class="dv">3</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a>  <span class="at">n =</span> <span class="dv">10</span></span>
 <span id="cb12-8"><a href="#cb12-8"></a>)</span>
 <span id="cb12-9"><a href="#cb12-9"></a>m</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -383,8 +383,8 @@ number of species                     :  1
 number of modelling methods           :  1 
 names of modelling methods            :  rf 
 replicate.methods (data partitioning) :  subsampling 
-number of replicates (each method)    :  3 
-toral number of replicates per model  :  3 (per species) 
+number of replicates (each method)    :  10 
+toral number of replicates per model  :  10 (per species) 
 test percentage (in subsampling)      :  20 
 ------------------------------------------
 model run success percentage (per species)  :
@@ -402,7 +402,7 @@ model Mean performance (per species), using test dataset (generated using partit
 
 methods    :     AUC     |     COR     |     TSS     |     Deviance 
 -------------------------------------------------------------------------
-rf         :     0.89    |     0.73    |     0.82    |     0.99     </code></pre>
+rf         :     0.85    |     0.65    |     0.7     |     0.99     </code></pre>
 </div>
 </div>
 </section>
@@ -427,8 +427,31 @@ Figure&nbsp;2: Receiver perating Characteristic Curve
 <p>We may also want to assess how our the suitability of habitat varies with the changes in values of the predictor variables. Ideally, we expect to see unimodal curves if we exhausted the niche of the species.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">rcurve</span>(m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: ggplot2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'ggplot2'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:kernlab':
+
+    alpha</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:randomForest':
+
+    margin</code></pre>
+</div>
 <div class="cell-output cell-output-stdout">
-<pre><code>The id argument is not specified; The modelIDs of 3 successfully fitted models are assigned to id...! </code></pre>
+<pre><code>The id argument is not specified; The modelIDs of 10 successfully fitted models are assigned to id...! </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.
+ℹ The deprecated feature was likely used in the sdm package.
+  Please report the issue to the authors.</code></pre>
 </div>
 <div class="cell-output-display">
 <div id="fig-fig3" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -455,7 +478,7 @@ Figure&nbsp;4: Response curve of the species
 </div>
 <p>To see which of the predictor variables was most important for defining the niche of the species, we can use getVarImp function as follows:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">plot</span>(<span class="fu">getVarImp</span>(m))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">plot</span>(<span class="fu">getVarImp</span>(m))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 The variable importance for all the models are combined (averaged)... </code></pre>
@@ -479,8 +502,8 @@ Figure&nbsp;5: Variable importance for the species
 <h2 data-number="1.8" class="anchored" data-anchor-id="predict"><span class="header-section-number">1.8</span> Predict</h2>
 <p>Finally, the end game is to make prediction of habitat suitability of the species over the geographic space. Here we feed all the predictor variables to the model in order to get a continuous habitat suitability map as follows :</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="at">object =</span> m, preds, <span class="at">mean =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb19-2"><a href="#cb19-2"></a><span class="fu">plot</span>(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="at">object =</span> m, preds, <span class="at">mean =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="fu">plot</span>(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-fig5" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
