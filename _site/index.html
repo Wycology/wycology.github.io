@@ -271,7 +271,7 @@ window.Quarto = {
 <pre><code>terra 1.8.86</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>sdm 1.2-67 (2025-09-24)</code></pre>
+<pre><code>sdm 1.2-59 (2025-07-13)</code></pre>
 </div>
 </div>
 </section>
@@ -357,7 +357,7 @@ feature names                         :  elevation, precipitation, temperature, 
 type                                  :  Presence-Absence 
 has independent test data?             :  FALSE 
 number of records                     :  200 
-has coordinates?                      :  TRUE </code></pre>
+has Coordinates?                      :  TRUE </code></pre>
 </div>
 </div>
 <p>The <span class="math inline">\(d\)</span> object tells us information like number of species in our data set, the name of the species, number of features (predictor variables) and their names, type of the data such as presence-absence or presence-only or presence-background, whether we have separate/independent test data, number of records and whether they have coordinates. This is the data we supply to the <code>sdm</code> function to train the model.</p>
@@ -383,7 +383,7 @@ number of modelling methods           :  1
 names of modelling methods            :  rf 
 replicate.methods (data partitioning) :  subsampling 
 number of replicates (each method)    :  3 
-total number of replicates per model  :  3 (per species) 
+toral number of replicates per model  :  3 (per species) 
 test percentage (in subsampling)      :  20 
 ------------------------------------------
 model run success percentage (per species)  :
@@ -399,9 +399,9 @@ model Mean performance (per species), using test dataset (generated using partit
  ## species   :  Occurrence 
 =========================
 
-methods    :     AUC     |     COR     |     TSS     |  Deviance 
+methods    :     AUC     |     COR     |     TSS     |     Deviance 
 -------------------------------------------------------------------------
-rf         :     0.85    |     0.68    |     0.7     |     1        </code></pre>
+rf         :     0.83    |     0.62    |     0.65    |     1        </code></pre>
 </div>
 </div>
 </section>
@@ -446,6 +446,12 @@ Attaching package: 'ggplot2'</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>The id argument is not specified; The modelIDs of 3 successfully fitted models are assigned to id...! </code></pre>
 </div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.
+ℹ The deprecated feature was likely used in the sdm package.
+  Please report the issue to the authors.</code></pre>
+</div>
 <div class="cell-output-display">
 <div id="fig-fig3" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -471,7 +477,7 @@ Figure&nbsp;4: Response curve of the species
 </div>
 <p>To see which of the predictor variables was most important for defining the niche of the species, we can use getVarImp function as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">plot</span>(<span class="fu">getVarImp</span>(m))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">plot</span>(<span class="fu">getVarImp</span>(m))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 The variable importance for all the models are combined (averaged)... </code></pre>
@@ -493,10 +499,10 @@ Figure&nbsp;5: Variable importance for the species
 </section>
 <section id="predict" class="level2" data-number="1.8">
 <h2 data-number="1.8" class="anchored" data-anchor-id="predict"><span class="header-section-number">1.8</span> Predict</h2>
-<p>Finally, the end game is to make prediction of habitat suitability of the species over the geographic space. Here we feed all the predictor variables to the model and get a continuous habitat suitability map as follows:</p>
+<p>Finally, the end game is to make prediction of habitat suitability of the species over the geographic space. Here we feed all the predictor variables to the model in order to get a continuous habitat suitability map as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="at">object =</span> m, preds, <span class="at">mean =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">plot</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="at">object =</span> m, preds, <span class="at">mean =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="fu">plot</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="fig-fig5" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">

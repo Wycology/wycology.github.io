@@ -10,9 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            gdal-bin \
+            libgdal-dev \
+            libproj-dev \
+            libgeos-dev \
+            pandoc
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -22,7 +33,7 @@ jobs:
         with:
           r-version: '4.2.0'
 
-      - name: Install R Dependencies
+      - name: Install R dependencies
         uses: r-lib/actions/setup-renv@v2
         with:
           cache-version: 1
