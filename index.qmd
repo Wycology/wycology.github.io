@@ -133,7 +133,7 @@ Finally, the end game is to make prediction of habitat suitability of the specie
 ```{r}
 #| eval: true
 #| label: fig-fig5
-#| fig-cap: "Current habitat suitability for the specie"
+#| fig-cap: "Current habitat suitability for the species"
 p <- predict(object = m, preds, mean = TRUE)
 plot(p)
 ```
