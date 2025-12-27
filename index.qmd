@@ -100,7 +100,7 @@ m
 We can make a few plots including the roc curve plot, to check whether the model performed better than random chance, @fig-fig2.
 
 ```{r}
-#| eval: tru
+#| eval: true
 #| label: fig-fig2
 #| fig-cap: "Receiver perating Characteristic Curve"
 roc(m)
