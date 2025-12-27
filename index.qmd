@@ -130,7 +130,7 @@ This shows us that vegetation, in this case, was the most important variable in 
 
 ## Predict
 
-Finally, the end game is to make prediction of habitat suitability of the species over the geographic space. Here we feed all the predictor variables to the model and get a continuous habitat suitability map as follows:
+Finally, the end game is to make prediction of habitat suitability of the species over the geographic space. Here we feed all the predictor variables to the model in order to get a continuous habitat suitability map as follows:
 
 ```{r}
 #| eval: true
