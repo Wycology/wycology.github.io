@@ -100,7 +100,7 @@ m
 We can make a few plots including the roc curve plot, to check whether the model performed better than random chance, @fig-fig2.
 
 ```{r}
-#| eval: true
+#| eval: tru
 #| label: fig-fig2
 #| fig-cap: "Receiver perating Characteristic Curve"
 roc(m)
@@ -114,8 +114,6 @@ We may also want to assess how our the suitability of habitat varies with the ch
 #| fig-cap: "Response Curve for the species to environmental variables"
 rcurve(m)
 ```
-
-![Response curve of the species](f5.png){#fig-fig3}
 
 To see which of the predictor variables was most important for defining the niche of the species, we can use getVarImp function as follows:
 
