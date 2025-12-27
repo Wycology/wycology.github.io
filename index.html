@@ -210,6 +210,7 @@ window.Quarto = {
   <li><a href="#build-the-model" id="toc-build-the-model" class="nav-link" data-scroll-target="#build-the-model"><span class="header-section-number">1.6</span> Build the model</a></li>
   <li><a href="#check-few-plots" id="toc-check-few-plots" class="nav-link" data-scroll-target="#check-few-plots"><span class="header-section-number">1.7</span> Check few plots</a></li>
   <li><a href="#predict" id="toc-predict" class="nav-link" data-scroll-target="#predict"><span class="header-section-number">1.8</span> Predict</a></li>
+  <li><a href="#binary-maps" id="toc-binary-maps" class="nav-link" data-scroll-target="#binary-maps"><span class="header-section-number">1.9</span> Binary Maps</a></li>
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
@@ -402,7 +403,7 @@ model Mean performance (per species), using test dataset (generated using partit
 
 methods    :     AUC     |     COR     |     TSS     |     Deviance 
 -------------------------------------------------------------------------
-rf         :     0.88    |     0.71    |     0.75    |     0.87     </code></pre>
+rf         :     0.86    |     0.65    |     0.71    |     0.97     </code></pre>
 </div>
 </div>
 </section>
@@ -424,7 +425,7 @@ Figure&nbsp;2: Receiver perating Characteristic Curve
 </div>
 </div>
 </div>
-<p>We may also want to assess how our the suitability of habitat varies with the changes in values of the predictor variables. Ideally, we expect to see unimodal curves if we exhausted the niche of the species.</p>
+<p>We may also want to assess how our the suitability of habitat varies with the changes in values of the predictor variables. Ideally, we expect to see uni-modal curves if we exhausted the niche of the species.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">rcurve</span>(m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
@@ -490,7 +491,7 @@ Figure&nbsp;4: Variable importance for the species
 </section>
 <section id="predict" class="level2" data-number="1.8">
 <h2 data-number="1.8" class="anchored" data-anchor-id="predict"><span class="header-section-number">1.8</span> Predict</h2>
-<p>Finally, the end game is to make prediction of habitat suitability of the species over the geographic space. Here we feed all the predictor variables to the model in order to get a continuous habitat suitability map as follows :</p>
+<p>Finally, the end game is to make prediction of habitat suitability of the species over the geographic space. Here we feed all the predictor variables to the model in order to get a continuous habitat suitability map as follows:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="at">object =</span> m, preds, <span class="at">mean =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb24-2"><a href="#cb24-2"></a><span class="fu">plot</span>(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -502,6 +503,26 @@ Figure&nbsp;4: Variable importance for the species
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fig5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5: Current habitat suitability for the species
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="binary-maps" class="level2" data-number="1.9">
+<h2 data-number="1.9" class="anchored" data-anchor-id="binary-maps"><span class="header-section-number">1.9</span> Binary Maps</h2>
+<p>After creating the habitat suitability map, we may be interested in actually showing where the species are present or absent. For that we need to binarize the suitability map so that we have presence (1) or absence (0). However, since the suitability map is continuous, it is difficult to strike a balance on where to pick the threshold. For this, we can go with a threshold that maximizes sensitivity and specificity. However, depending on the research objective, one may decide to use different threshold. For example, when trying to identify potential areas for conserving an endangered species, one may use lower thershold so that more area is considered present locations and demarcated for conservation, etc. Here we will go with the threshold that maximizes sensitivity and specificity.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>pa <span class="ot">&lt;-</span> <span class="fu">pa</span>(<span class="at">x =</span> p, <span class="at">y =</span> m, <span class="at">id =</span> <span class="st">"ensemble"</span>, <span class="at">opt =</span> <span class="dv">2</span>)</span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="fu">plot</span>(pa, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"darkgreen"</span>, <span class="st">"gray80"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-fig6" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fig6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-fig6-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fig6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Presence absence binary map for the species
 </figcaption>
 </figure>
 </div>
