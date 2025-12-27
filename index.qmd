@@ -28,6 +28,8 @@ This document provides a minimal, reproducible SDM workflow in $R$ using the `sd
 ```{r}
 #install.packages('sdm') # In case you do not have it installed already
 library(sdm)
+library(dplyr)
+library(ggplot2)
 ```
 
 ## Reading in the occurrence data
