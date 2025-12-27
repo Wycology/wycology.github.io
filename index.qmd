@@ -32,7 +32,7 @@ library(sdm)
 
 ## Reading in the occurrence data
 
-We will use data which comes with the package as that would be the easiest way to begin using the package. This data has presence (1) and absence (0) records of a virtual species. We will read it into $R$ using vect function from `terra` package [@abatzoglou2018] which is loaded whenever you load `sdm`.
+We will use data which comes with the package as that would be the easiest way to begin using the package. This data has presence (1) and absence (0) records of a virtual species. We will read it into $R$ using the vect function from `terra` package [@abatzoglou2018] which is loaded whenever you load `sdm`.
 
 ```{r}
 #| eval: true
