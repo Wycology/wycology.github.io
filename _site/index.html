@@ -401,7 +401,7 @@ model Mean performance (per species), using test dataset (generated using partit
 
 methods    :     AUC     |     COR     |     TSS     |     Deviance 
 -------------------------------------------------------------------------
-rf         :     0.83    |     0.62    |     0.65    |     1        </code></pre>
+rf         :     0.86    |     0.67    |     0.69    |     0.99     </code></pre>
 </div>
 </div>
 </section>
@@ -499,7 +499,7 @@ Figure&nbsp;5: Variable importance for the species
 </section>
 <section id="predict" class="level2" data-number="1.8">
 <h2 data-number="1.8" class="anchored" data-anchor-id="predict"><span class="header-section-number">1.8</span> Predict</h2>
-<p>Finally, the end game is to make prediction of habitat suitability of the species over the geographic space. Here we feed all the predictor variables to the model in order to get a continuous habitat suitability map as follows:</p>
+<p>Finally, the end game is to make prediction of habitat suitability of the species over the geographic space. Here we feed all the predictor variables to the model in order to get a continuous habitat suitability map as follows :</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="at">object =</span> m, preds, <span class="at">mean =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb24-2"><a href="#cb24-2"></a><span class="fu">plot</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
