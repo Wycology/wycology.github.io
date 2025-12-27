@@ -150,4 +150,29 @@ pa <- pa(x = p, y = m, id = "ensemble", opt = 2)
 plot(pa, col = c("darkgreen", "gray80"))
 ```
 
+## How much area is suitable for the species?
+
+We can get this information using the expanse function in terra as follows:
+
+```{r}
+crs(pa) <- crs(sp)
+present_area <- expanse(pa, unit = "ha", byValue = TRUE)
+present_area |> 
+  mutate(Class = case_when(value == 1 ~ "Presence",
+                           value == 0 ~ "Absence",
+                           TRUE ~ as.character(value))) |> 
+  ggplot(aes(Class, area, fill = Class)) +
+  geom_col() +
+  # Add text labels on top of the bars
+  geom_text(aes(label = round(area)),  # Display area value, rounded to 2 decimals
+            vjust = -0.5,                 # Adjust vertical position (move up)
+            color = "black",               # Set text color
+            size = 5) +                    # Set text size
+  scale_fill_manual(values = c("Absence" = "gray80", "Presence" = "darkgreen")) +
+  theme_classic(base_size = 16) +
+  theme(legend.position = "none") +
+  # Optional: Adjust y-axis limits to make room for the text
+  ylim(0, max(present_area$area) * 1.1) # Extends the y-axis limit by 10% to prevent clipping
+```
+
 # References {.unnumbered}
