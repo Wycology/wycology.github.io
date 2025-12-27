@@ -90,7 +90,7 @@ m <- sdm(
   methods = "rf", # There are many methods, see getMethodNames()
   replication = "sub", # Can also use cv or boot.
   test.percent = 20,
-  n = 3
+  n = 10
 )
 m
 ```
