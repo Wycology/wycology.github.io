@@ -106,7 +106,7 @@ We can make a few plots including the roc curve plot, to check whether the model
 roc(m)
 ```
 
-We may also want to assess how our the suitability of habitat varies with the changes in values of the predictor variables. Ideally, we expect to see unimodal curves if we exhausted the niche of the species.
+We may also want to assess how our the suitability of habitat varies with the changes in values of the predictor variables. Ideally, we expect to see uni-modal curves if we exhausted the niche of the species.
 
 ```{r}
 #| eval: true
@@ -128,7 +128,7 @@ This shows us that vegetation, in this case, was the most important variable in 
 
 ## Predict
 
-Finally, the end game is to make prediction of habitat suitability of the species over the geographic space. Here we feed all the predictor variables to the model in order to get a continuous habitat suitability map as follows :
+Finally, the end game is to make prediction of habitat suitability of the species over the geographic space. Here we feed all the predictor variables to the model in order to get a continuous habitat suitability map as follows:
 
 ```{r}
 #| eval: true
@@ -136,6 +136,18 @@ Finally, the end game is to make prediction of habitat suitability of the specie
 #| fig-cap: "Current habitat suitability for the species"
 p <- predict(object = m, preds, mean = TRUE)
 plot(p)
+```
+
+## Binary Maps
+
+After creating the habitat suitability map, we may be interested in actually showing where the species are present or absent. For that we need to binarize the suitability map so that we have presence (1) or absence (0). However, since the suitability map is continuous, it is difficult to strike a balance on where to pick the threshold. For this, we can go with a threshold that maximizes sensitivity and specificity. However, depending on the research objective, one may decide to use different threshold. For example, when trying to identify potential areas for conserving an endangered species, one may use lower thershold so that more area is considered present locations and demarcated for conservation, etc. Here we will go with the threshold that maximizes sensitivity and specificity.
+
+```{r}
+#| eval: true
+#| label: fig-fig6
+#| fig-cap: "Presence absence binary map for the species"
+pa <- pa(x = p, y = m, id = "ensemble", opt = 2)
+plot(pa, col = c("darkgreen", "gray80"))
 ```
 
 # References {.unnumbered}
